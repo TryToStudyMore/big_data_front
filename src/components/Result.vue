@@ -75,15 +75,16 @@ export default {
     },
     getInfo(formData)
     {
-      console.log("你好",formData.userId);
-      console.log("你好",formData.userId);
+
+      console.log(typeof (formData.num)==="string")
       this.loadIfo=true
       axios.post("/api/hbase/search",this.$qs.stringify({
         "startTime":(formData.time[0]).toLocaleTimeString(),
         "endTime":(formData.time[1]).toLocaleTimeString(),
         "userId":formData.userId,
         "keyword":formData.keyword,
-        "shortUrl":formData.url
+        "shortUrl":formData.url,
+        "limit":typeof (formData.num)==="string"?-1:formData.num
       })).then((res)=>{
         //console.log("this",this);
         console.log("data",res.data);

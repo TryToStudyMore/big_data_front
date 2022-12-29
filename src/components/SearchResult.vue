@@ -2,7 +2,7 @@
   <div v-loading="loadIfo" element-loading-text="可能需要亿点点时间" element-loading-background="rgba(255, 255, 255, 1)" style="border-left: solid 5px grey;height: 100vh;overflow-y:scroll" v>
     <div style="display: flex;justify-content: center;align-items: center">
       <el-pagination
-          hide-on-single-page="true"
+          :hide-on-single-page="singleHidden"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :page-sizes="[10, 20, 30, 40]"
@@ -12,7 +12,6 @@
       <label v-show="tableData.length>100" style="margin-left: 30px;color: royalblue;font-weight: bold">似乎数据有点大</label>
     </div>
     <el-table
-
         :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
         style="width: 100%">
       <el-table-column
@@ -60,7 +59,8 @@ export default {
       tableData:[],
       currentPage:1,
       PageSize:10,
-      loadIfo:false
+      loadIfo:false,
+      singleHidden:true
     }
   },
   methods:{
@@ -78,7 +78,9 @@ export default {
 
       console.log(typeof (formData.num)==="string")
       this.loadIfo=true
-      axios.post("/api/hbase/search",this.$qs.stringify({
+      let url = "/api/hbase/search";
+      if(!formData.choose_hbase)url="/api/spark/search";
+      axios.post(url,this.$qs.stringify({
         "startTime":(formData.time[0]).toLocaleTimeString(),
         "endTime":(formData.time[1]).toLocaleTimeString(),
         "userId":formData.userId,

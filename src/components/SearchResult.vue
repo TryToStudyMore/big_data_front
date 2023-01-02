@@ -93,10 +93,15 @@ export default {
         this.tableData=res.data;
         this.loadIfo=false
       })
+    },
+    dealRecallData(data)
+    {
+      this.tableData=data
     }
   },
   mounted() {
     Bus.$on("getFormInfo",this.getInfo)
+    Bus.$on("getRecallData",this.dealRecallData)
   }
 }
 </script>

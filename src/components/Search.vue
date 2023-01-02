@@ -55,7 +55,7 @@
         <el-time-picker is-range start-placeholder="起始时间" end-placeholder="结束时间" range-separator="至" v-model="form.time" style="width: 370px"></el-time-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="emitCount" style="width: 100%">查询</el-button>
+        <el-button type="primary" @click="emitCount" style="width: 100%">统计</el-button>
       </el-form-item>
     </el-form>
 
@@ -70,7 +70,7 @@
       <el-form-item label="用户ID">
         <div style="display: flex">
           <el-input v-model="user.userId" style="flex: 8"/>
-          <el-button @click="emitUser" type="primary" style="flex: 1;margin-left: 5px">查询</el-button>
+          <el-button @click="emitUser" type="primary" style="flex: 1;margin-left: 5px">统计</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -84,7 +84,7 @@
     </el-tooltip>
     <el-form :disabled="!(choose[3])"  label-width="80px">
       <el-form-item label="排名查询">
-          <el-button type="primary" @click="emitNothing" style="width: 100%">查询</el-button>
+          <el-button type="primary" @click="emitNothing" style="width: 100%">统计</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -178,6 +178,21 @@ export default {
         Bus.$emit("getResultVue","RankResult")
       }
     },
+    dealRecallForm(locateLog)
+    {
+      // this.form.time[0]=new Date('2022-12-16 '+locateLog.startTime)
+     // console.log(this.form.time[0])
+      this.$set(this.form.time,0,new Date('2022-12-16 '+locateLog.startTime))
+      this.form.time[1]=new Date('2022-12-16 '+locateLog.endTime)
+      //console.log(this.form.time[1])
+      this.$set(this.form.time,1,new Date('2022-12-16 '+locateLog.endTime))
+      this.form.keyword=locateLog.keyword;
+      this.form.url=locateLog.shortUrl;
+      this.form.userId=locateLog.userId
+    }
+  },
+  mounted() {
+    Bus.$on("getRecallForm",this.dealRecallForm)
   }
 }
 </script>

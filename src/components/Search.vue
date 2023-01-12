@@ -52,7 +52,7 @@
     </el-tooltip>
     <el-form :disabled="!(choose[1])"  :model="count" label-width="80px">
       <el-form-item label="选择时间">
-        <el-time-picker is-range start-placeholder="起始时间" end-placeholder="结束时间" range-separator="至" v-model="form.time" style="width: 370px"></el-time-picker>
+        <el-time-picker is-range start-placeholder="起始时间" end-placeholder="结束时间" range-separator="至" v-model="count.time" style="width: 370px"></el-time-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="emitCount" style="width: 100%">统计</el-button>
@@ -83,7 +83,7 @@
       </el-switch>
     </el-tooltip>
     <el-form :disabled="!(choose[3])"  label-width="80px">
-      <el-form-item label="排名查询">
+      <el-form-item label="排名统计">
           <el-button type="primary" @click="emitNothing" style="width: 100%">统计</el-button>
       </el-form-item>
     </el-form>
@@ -188,7 +188,9 @@ export default {
       this.$set(this.form.time,1,new Date('2022-12-16 '+locateLog.endTime))
       this.form.keyword=locateLog.keyword;
       this.form.url=locateLog.shortUrl;
-      this.form.userId=locateLog.userId
+      this.form.userId=locateLog.userId;
+      if(locateLog.limit!=-1)this.form.num=locateLog.limit;
+      if(locateLog.type ==="SPARK")this.form.choose_hbase=false
     }
   },
   mounted() {

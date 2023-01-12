@@ -9,7 +9,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="tableData.length">
       </el-pagination>
-      <label v-show="tableData.length>100" style="margin-left: 30px;color: royalblue;font-weight: bold">似乎数据有点大</label>
+      <label v-show="limit!=-1" style="margin-left: 30px;color: royalblue;font-weight: bold">数据仅截取了{{this.limit}}个，可能还有</label>
     </div>
     <el-table
         :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -60,7 +60,8 @@ export default {
       currentPage:1,
       PageSize:10,
       loadIfo:false,
-      singleHidden:true
+      singleHidden:true,
+      limit:-1
     }
   },
   methods:{
@@ -75,7 +76,9 @@ export default {
     },
     getInfo(formData)
     {
-
+      console.log("limit"+typeof (formData.num))
+      if(typeof (formData.num)=="string")this.limit=-1;
+      else this.limit=formData.num
       console.log(typeof (formData.num)==="string")
       this.loadIfo=true
       let url = "/api/hbase/search";
@@ -96,7 +99,9 @@ export default {
     },
     dealRecallData(data)
     {
-      this.tableData=data
+      this.tableData=data.data
+      console.log(typeof (data.locateLog.limit),data.locateLog.limit)
+      if(data.locateLog.limit!=-1)this.limit = data.locateLog.limit
     }
   },
   mounted() {

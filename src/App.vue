@@ -46,7 +46,7 @@ export default {
       axios.post("/api/requery").then((res)=>{
         console.log(res.data)
         Bus.$emit("getRecallForm",res.data.locateLog)
-        Bus.$emit("getRecallData",res.data.data)
+        Bus.$emit("getRecallData",res.data)
       })
     },
     problem()
